@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "412690740881",
+    "firebase_url": "https://workhabit-8dfae.firebaseio.com",
+    "project_id": "workhabit-8dfae",
+    "storage_bucket": "workhabit-8dfae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412690740881:android:88a1feacb43503a349f130",
+        "android_client_info": {
+          "package_name": "cat.coronout.workhabit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412690740881-ir33v15p5pmpm2lak2lhdo9d1acujm65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj4qWgMSOmCGRrYeMkRhDtLDrpIAgjANU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412690740881-ir33v15p5pmpm2lak2lhdo9d1acujm65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

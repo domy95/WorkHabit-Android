@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Workhabit</string>
+    <string name="socialize">Socializate</string>
+    <string name="practise_exercise">Practica ejercicio</string>
+    <string name="take_break">Haz una parada</string>
+    <string name="finish_working">Termina el trabajo</string>
+    <string name="start_working">Comienza el trabajo</string>
+    <string name="birth_date">Fecha nacimiento</string>
+    <string name="working_days">Días de trabajo</string>
+    <string name="reset">RESTAURAR</string>
+    <string name="save">GUARDAR</string>
+    <string name="Sun">SU</string>
+    <string name="Sat">SA</string>
+    <string name="Fri">FR</string>
+    <string name="Thu">TH</string>
+    <string name="Wed">WE</string>
+    <string name="Tue">TU</string>
+    <string name="Mon">MO</string>
+    <string name="app_slogan">Trabaja bien, trabaja a gusto</string>
+</resources>
