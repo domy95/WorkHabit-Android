@@ -16,6 +16,10 @@ public class Setting {
         return schedules;
     }
 
+    public Schedule getSchedule(int weekDay) {
+        return this.schedules[weekDay - 1];
+    }
+
     public void setSchedule(Schedule schedule) {
         this.schedules[schedule.getWeekDay() - 1] = schedule;
     }

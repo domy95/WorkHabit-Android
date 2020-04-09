@@ -2,38 +2,71 @@ package cat.coronout.workhabit.model;
 
 public class Schedule {
 
-    private int weekDay;
-    private String horaIniciMati;
-    private String horaFiMati;
-    private String horaIniciTarda;
-    private String horaFiTarda;
+    public enum HOUR_MODE {
+        START_MORNING,
+        END_MORNING,
+        START_AFTERNOON,
+        END_AFTERNOON
+    }
 
-    public Schedule(int weekDay, String horaIniciMati, String horaFiMati, String horaIniciTarda, String horaFiTarda) {
+    private int weekDay;
+    private String startHourMorning;
+    private String endHourMorning;
+    private String startHourAfternoon;
+    private String endHourAfternoon;
+    private boolean isEnabled;
+
+    public Schedule(int weekDay, String startHourMorning, String endHourMorning, String startHourAfternoon, String endHourAfternoon) {
         this.weekDay = weekDay;
-        this.horaIniciMati = horaIniciMati;
-        this.horaFiMati = horaFiMati;
-        this.horaIniciTarda = horaIniciTarda;
-        this.horaFiTarda = horaFiTarda;
+        this.startHourMorning = startHourMorning;
+        this.endHourMorning = endHourMorning;
+        this.startHourAfternoon = startHourAfternoon;
+        this.endHourAfternoon = endHourAfternoon;
+        this.isEnabled = true;
     }
 
     public int getWeekDay() {
         return weekDay;
     }
 
-    public String getHoraIniciMati() {
-        return horaIniciMati;
+    public String getStartHourMorning() {
+        return startHourMorning;
     }
 
-    public String getHoraFiMati() {
-        return horaFiMati;
+    public void setStartHourMorning(String startHourMorning) {
+        this.startHourMorning = startHourMorning;
     }
 
-    public String getHoraIniciTarda() {
-        return horaIniciTarda;
+    public String getEndHourMorning() {
+        return endHourMorning;
     }
 
-    public String getHoraFiTarda() {
-        return horaFiTarda;
+    public void setEndHourMorning(String endHourMorning) {
+        this.endHourMorning = endHourMorning;
+    }
+
+    public String getStartHourAfternoon() {
+        return startHourAfternoon;
+    }
+
+    public void setStartHourAfternoon(String startHourAfternoon) {
+        this.startHourAfternoon = startHourAfternoon;
+    }
+
+    public String getEndHourAfternoon() {
+        return endHourAfternoon;
+    }
+
+    public void setEndHourAfternoon(String endHourAfternoon) {
+        this.endHourAfternoon = endHourAfternoon;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
 }
