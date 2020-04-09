@@ -1,5 +1,7 @@
 package cat.coronout.workhabit.model;
 
+import androidx.annotation.Nullable;
+
 public class Schedule {
 
     public enum HOUR_MODE {
@@ -69,4 +71,25 @@ public class Schedule {
         isEnabled = enabled;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj instanceof Schedule) {
+            return (this.weekDay == ((Schedule) obj).weekDay);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + this.weekDay;
+        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
+        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
+        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
+        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
+        result = 31 * result + (this.isEnabled ? 1 : 0);
+        return result;
+    }
 }
