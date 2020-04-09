@@ -85,9 +85,9 @@ public class Schedule {
     public int hashCode() {
         int result = 17;
         result = 31 * result + this.weekDay;
-        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
-        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
-        result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
+        result = 31 * result + (this.startHourMorning == null ? 0 : this.startHourMorning.hashCode());
+        result = 31 * result + (this.endHourMorning == null ? 0 : this.endHourMorning.hashCode());
+        result = 31 * result + (this.startHourAfternoon == null ? 0 : this.startHourAfternoon.hashCode());
         result = 31 * result + (this.endHourAfternoon == null ? 0 : this.endHourAfternoon.hashCode());
         result = 31 * result + (this.isEnabled ? 1 : 0);
         return result;

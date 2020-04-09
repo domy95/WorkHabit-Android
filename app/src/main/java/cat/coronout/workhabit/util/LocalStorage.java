@@ -99,6 +99,18 @@ public class LocalStorage {
         return true;
     }
 
+    public void deleteCurrentSetting() {
+        if (preferencesEditor != null) {
+            for (int i = 0; i < 7; i++) {
+                int weekDay = (i + 1);
+                preferencesEditor.remove(KEY_SCHEDULE_PREFIX + weekDay);
+            }
+            preferencesEditor.remove(KEY_BIRTH_DATE);
+            preferencesEditor.remove(KEY_USING_SAME_SCHEDULE);
+            preferencesEditor.commit();
+        }
+    }
+
     public Setting getCurrentSetting() {
         Setting setting = new Setting();
         for (int i = 0; i < 7; i++) {

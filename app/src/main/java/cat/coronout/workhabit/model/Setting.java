@@ -48,12 +48,18 @@ public class Setting {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Setting) {
             Setting tmpSetting = (Setting) obj;
-            if (this.birthDate.equals(tmpSetting.birthDate)) {
+            if ((this.birthDate == null && tmpSetting.birthDate == null) || (this.birthDate != null && tmpSetting.birthDate != null && this.birthDate.equals(tmpSetting.birthDate))) {
                 if (this.usingSameSchedule == tmpSetting.usingSameSchedule) {
                     boolean found = false;
                     int i = 0;
                     while (i < this.schedules.length && !found) {
-                        if (this.schedules[i].hashCode() != tmpSetting.schedules[i].hashCode())
+                        if (this.schedules[i] != null && tmpSetting.schedules[i] != null) {
+                            if (this.schedules[i].hashCode() != tmpSetting.schedules[i].hashCode())
+                                found = true;
+                        }
+                        else if (this.schedules[i] != null && tmpSetting.schedules[i] == null)
+                            found = true;
+                        else if (this.schedules[i] == null && tmpSetting.schedules[i] != null)
                             found = true;
                         i++;
                     }

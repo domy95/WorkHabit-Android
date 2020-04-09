@@ -1,5 +1,9 @@
 package cat.coronout.workhabit.util;
 
+import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,6 +65,11 @@ public abstract class Utils {
             ex.printStackTrace();
         }
         return result;
+    }
+
+    public static void showBasicSnackBar(View container, String message) {
+        Snackbar snackBar = Snackbar.make(container, message, Snackbar.LENGTH_LONG);
+        snackBar.show();
     }
 
 }
