@@ -39,4 +39,28 @@ public abstract class Utils {
         return finalHour;
     }
 
+    public static int getHour(String hour) {
+        String[] hourSplitted = hour.split(":");
+        int result;
+        try {
+            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[0]) : (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY));
+        } catch (Exception ex) {
+            result = (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY);
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int getMinute(String hour) {
+        String[] hourSplitted = hour.split(":");
+        int result;
+        try {
+            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[1]) : (Calendar.getInstance()).get(Calendar.MINUTE));
+        } catch (Exception ex) {
+            result = (Calendar.getInstance()).get(Calendar.MINUTE);
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
 }
