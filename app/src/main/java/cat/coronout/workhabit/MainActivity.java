@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,30 +33,33 @@ public class MainActivity extends AppCompatActivity {
     /// `Setting` instance
     private Setting setting;
 
+    // Checkbox
+    private CheckBox checkboxSameSchedule;
+
     // Layouts
-    LinearLayout layoutMon, layoutTue, layoutWed, layoutThu, layoutFri, layoutSat, layoutSun;
+    private LinearLayout layoutMon, layoutTue, layoutWed, layoutThu, layoutFri, layoutSat, layoutSun;
 
     // Buttons
-    Button btnMon, btnTue, btnWed, btnThu, btnFri, btnSat, btnSun;
+    private Button btnMon, btnTue, btnWed, btnThu, btnFri, btnSat, btnSun;
 
     // TextViews
     //  Monday
-    TextView startHourMorningMon, endHourMorningMon, startHourAfternoonMon, endHourAfternoonMon;
+    private TextView startHourMorningMon, endHourMorningMon, startHourAfternoonMon, endHourAfternoonMon;
     //  Tuesday
-    TextView startHourMorningTue, endHourMorningTue, startHourAfternoonTue, endHourAfternoonTue;
+    private TextView startHourMorningTue, endHourMorningTue, startHourAfternoonTue, endHourAfternoonTue;
     //  Wednesday
-    TextView startHourMorningWed, endHourMorningWed, startHourAfternoonWed, endHourAfternoonWed;
+    private TextView startHourMorningWed, endHourMorningWed, startHourAfternoonWed, endHourAfternoonWed;
     //  Thursday
-    TextView startHourMorningThu, endHourMorningThu, startHourAfternoonThu, endHourAfternoonThu;
+    private TextView startHourMorningThu, endHourMorningThu, startHourAfternoonThu, endHourAfternoonThu;
     //  Friday
-    TextView startHourMorningFri, endHourMorningFri, startHourAfternoonFri, endHourAfternoonFri;
+    private TextView startHourMorningFri, endHourMorningFri, startHourAfternoonFri, endHourAfternoonFri;
     //  Saturday
-    TextView startHourMorningSat, endHourMorningSat, startHourAfternoonSat, endHourAfternoonSat;
+    private TextView startHourMorningSat, endHourMorningSat, startHourAfternoonSat, endHourAfternoonSat;
     //  Sunday
-    TextView startHourMorningSun, endHourMorningSun, startHourAfternoonSun, endHourAfternoonSun;
+    private TextView startHourMorningSun, endHourMorningSun, startHourAfternoonSun, endHourAfternoonSun;
 
     // BirthDate
-    TextView birthDateSelector;
+    private TextView birthDateSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         setupListeners();
 
         // Setup data
+        setupCheckbox();
         setupSchedules();
         setupBirthDate();
     }
@@ -87,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.save:
                 saveData();
@@ -96,20 +101,31 @@ public class MainActivity extends AppCompatActivity {
                 resetData();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void setupViews() {
-        setupButtons();
-        setupLayouts();
-        setupTextViews();
+        checkboxSameSchedule = findViewById(R.id.checkboxSameSchedule);
+        setupScheduleButtons();
+        setupScheduleLayouts();
+        setupScheduleTextViews();
+        birthDateSelector = findViewById(R.id.birthDateSelector);
     }
 
     private void setupListeners() {
+        setupCheckboxListeners();
         setupButtonsListeners();
         setupScheduleListeners();
         setupBirthDateListener();
+    }
+
+    private void setupCheckboxListeners() {
+        checkboxSameSchedule.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setting.setUsingSameSchedule(isChecked);
+            }
+        });
     }
 
     private void saveScheduleHour(final Schedule schedule, final Schedule.HOUR_MODE hourMode, String hour) {
@@ -145,30 +161,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void applyHourChange(String hour, final Schedule schedule, final Schedule.HOUR_MODE hourMode) {
+        if (setting.isUsingSameSchedule()) {
+            for (int i = 0; i < 7; i++) {
+                int weekDay = (i + 1);
+                Schedule tmpSchedule = setting.getSchedule(weekDay);
+                if (tmpSchedule == null)
+                    tmpSchedule = new Schedule(weekDay, "", "", "", "");
+                if (tmpSchedule.isEnabled()) {
+                    saveScheduleHour(tmpSchedule, hourMode, hour);
+                    setting.setSchedule(tmpSchedule);
+                    setupWeekDay(tmpSchedule.getWeekDay());
+                }
+            }
+        } else {
+            saveScheduleHour(schedule, hourMode, hour);
+            setting.setSchedule(schedule);
+            setupWeekDay(schedule.getWeekDay());
+        }
+    }
+
     private void setupHourListener(final Schedule schedule, final TextView textView, final Schedule.HOUR_MODE hourMode) {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String scheduleHour = getScheduleHour(schedule, hourMode);
-                String[] scheduleHourSplitted = scheduleHour.split(":");
-                int hour;
-                int minute;
-                try {
-                    hour = ((scheduleHourSplitted.length > 1) ? Integer.parseInt(scheduleHourSplitted[0]) : (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY));
-                    minute = ((scheduleHourSplitted.length > 1) ? Integer.parseInt(scheduleHourSplitted[1]) : (Calendar.getInstance()).get(Calendar.MINUTE));
-                } catch (Exception ex) {
-                    hour = (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY);
-                    minute = (Calendar.getInstance()).get(Calendar.MINUTE);
-                    ex.printStackTrace();
-                }
+                int hour = Utils.getHour(scheduleHour);
+                int minute = Utils.getMinute(scheduleHour);
                 TimePickerDialog dialog = new TimePickerDialog(
                         MainActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                saveScheduleHour(schedule, hourMode, Utils.getUserHour(hourOfDay, minute));
-                                setting.setSchedule(schedule);
-                                setupWeekDay(schedule.getWeekDay());
+                                String finalHour = Utils.getUserHour(hourOfDay, minute);
+                                applyHourChange(finalHour, schedule, hourMode);
                             }
                         },
                         hour,
@@ -262,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupButtons() {
+    private void setupScheduleButtons() {
         // Monday
         btnMon = findViewById(R.id.btnMon);
         // Tuesday
@@ -279,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         btnSun = findViewById(R.id.btnSun);
     }
 
-    private void setupLayouts() {
+    private void setupScheduleLayouts() {
         // Monday
         layoutMon = findViewById(R.id.layoutMon);
         // Tuesday
@@ -296,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
         layoutSun = findViewById(R.id.layoutSun);
     }
 
-    private void setupTextViews() {
+    private void setupScheduleTextViews() {
         // Monday
         startHourMorningMon = findViewById(R.id.startHourMorningMon);
         endHourMorningMon = findViewById(R.id.endHourMorningMon);
@@ -332,19 +358,24 @@ public class MainActivity extends AppCompatActivity {
         endHourMorningSun = findViewById(R.id.endHourMorningSun);
         startHourAfternoonSun = findViewById(R.id.startHourAfternoonSun);
         endHourAfternoonSun = findViewById(R.id.endHourAfternoonSun);
-        // BirthDate
-        birthDateSelector = findViewById(R.id.birthDateSelector);
     }
 
     private void saveData() {
-        localStorage.saveSetting(setting);
-        resetData();
+        if (localStorage.hasChanged(setting)) {
+            localStorage.saveSetting(setting);
+            resetData();
+        }
     }
 
     private void resetData() {
         setting = localStorage.getCurrentSetting();
+        setupCheckbox();
         setupSchedules();
         setupBirthDate();
+    }
+
+    private void setupCheckbox() {
+        checkboxSameSchedule.setChecked(setting.isUsingSameSchedule());
     }
 
     private void setupSchedules() {

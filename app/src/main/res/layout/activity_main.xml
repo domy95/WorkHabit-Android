@@ -40,6 +40,17 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginTop="10dp"/>
 
+            <CheckBox
+                android:id="@+id/checkboxSameSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:checked="true"
+                android:text="@string/same_schedule"
+                android:textColor="@color/grayText"
+                android:layout_marginBottom="10dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
