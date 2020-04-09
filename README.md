@@ -2,7 +2,7 @@
 
 ![Workhabit logo](https://github.com/udAL/WorkHabit-Android/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
-[![Google Play](http://i.imgur.com/mtGRPuM.png =100x20)](https://play.google.com/store/apps/details?id=cat.coronout.workhabit)
+[![Google Play](http://i.imgur.com/mtGRPuM.png)](https://play.google.com/store/apps/details?id=cat.coronout.workhabit)
 
 Short Description
 
