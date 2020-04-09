@@ -53,7 +53,7 @@ public class LocalStorage {
     }
 
     private void saveSchedule(Schedule schedule) {
-        if (preferencesEditor != null) {
+        if (preferencesEditor != null && schedule != null) {
             preferencesEditor.putString(KEY_SCHEDULE_PREFIX + schedule.getWeekDay(), objectToJson(schedule));
             preferencesEditor.commit();
         }
@@ -68,7 +68,7 @@ public class LocalStorage {
     }
 
     private void saveBirthDate(Date date) {
-        if (preferencesEditor != null) {
+        if (preferencesEditor != null && date != null) {
             preferencesEditor.putLong(KEY_BIRTH_DATE, date.getTime());
             preferencesEditor.commit();
         }
