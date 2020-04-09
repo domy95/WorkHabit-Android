@@ -16,6 +16,7 @@ public class LocalStorage {
     private final String STORAGE_NAME = "Workhabit-Storage";
     private final String KEY_SCHEDULE_PREFIX = "ScheduleForDay_";
     private final String KEY_BIRTH_DATE = "BirthDate";
+    private final String KEY_USING_SAME_SCHEDULE = "UsingSameSchedule";
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor preferencesEditor;
@@ -53,7 +54,7 @@ public class LocalStorage {
     }
 
     private void saveSchedule(Schedule schedule) {
-        if (preferencesEditor != null) {
+        if (preferencesEditor != null && schedule != null) {
             preferencesEditor.putString(KEY_SCHEDULE_PREFIX + schedule.getWeekDay(), objectToJson(schedule));
             preferencesEditor.commit();
         }
@@ -68,7 +69,7 @@ public class LocalStorage {
     }
 
     private void saveBirthDate(Date date) {
-        if (preferencesEditor != null) {
+        if (preferencesEditor != null && date != null) {
             preferencesEditor.putLong(KEY_BIRTH_DATE, date.getTime());
             preferencesEditor.commit();
         }
@@ -84,6 +85,20 @@ public class LocalStorage {
         return null;
     }
 
+    private void saveUsingSameSchedule(boolean usingSameSchedule) {
+        if (preferencesEditor != null) {
+            preferencesEditor.putBoolean(KEY_USING_SAME_SCHEDULE, usingSameSchedule);
+            preferencesEditor.commit();
+        }
+    }
+
+    private boolean getUsingSameSchedule() {
+        if (preferences != null) {
+            return preferences.getBoolean(KEY_USING_SAME_SCHEDULE, true);
+        }
+        return true;
+    }
+
     public Setting getCurrentSetting() {
         Setting setting = new Setting();
         for (int i = 0; i < 7; i++) {
@@ -92,6 +107,7 @@ public class LocalStorage {
                 setting.setSchedule(schedule);
         }
         setting.setBirthDate(getBirthDate());
+        setting.setUsingSameSchedule(getUsingSameSchedule());
         return setting;
     }
 
@@ -100,6 +116,12 @@ public class LocalStorage {
             saveSchedule(schedule);
         }
         saveBirthDate(setting.getBirthDate());
+        saveUsingSameSchedule(setting.isUsingSameSchedule());
+    }
+
+    public boolean hasChanged(Setting setting) {
+        Setting currentSetting = getCurrentSetting();
+        return (!setting.equals(currentSetting));
     }
 
 }

@@ -8,8 +8,9 @@
     <string name="practise_exercise">Practica exercici</string>
     <string name="socialize">Socialitza\'t</string>
 
-    <string name="date">Data</string>
-    <string name="hour">Hora</string>
+    <string name="same_schedule">Marca aquesta opció si vols mantenir el mateix horari a tots els dies actius</string>
+    <string name="date">dd/MM/yyyy</string>
+    <string name="hour">hh:mm</string>
     <string name="settings">Configuració:</string>
     <string name="birth_date">Data naixement</string>
     <string name="save">GUARDA</string>
