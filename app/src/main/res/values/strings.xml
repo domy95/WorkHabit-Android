@@ -7,7 +7,10 @@
     <string name="take_break">Fes una parada</string>
     <string name="practise_exercise">Practica exercici</string>
     <string name="socialize">Socialitza\'t</string>
-    
+
+    <string name="date">Data</string>
+    <string name="hour">Hora</string>
+    <string name="settings">Configuració:</string>
     <string name="birth_date">Data naixement</string>
     <string name="save">GUARDA</string>
     <string name="reset">RESTAURA</string>

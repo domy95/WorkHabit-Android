@@ -10,12 +10,15 @@
     <string name="working_days">Días de trabajo</string>
     <string name="reset">RESTAURAR</string>
     <string name="save">GUARDAR</string>
-    <string name="Sun">SU</string>
+    <string name="Mon">LU</string>
+    <string name="Tue">MA</string>
+    <string name="Wed">MI</string>
+    <string name="Thu">JU</string>
+    <string name="Fri">VI</string>
     <string name="Sat">SA</string>
-    <string name="Fri">FR</string>
-    <string name="Thu">TH</string>
-    <string name="Wed">WE</string>
-    <string name="Tue">TU</string>
-    <string name="Mon">MO</string>
+    <string name="Sun">DO</string>
     <string name="app_slogan">Trabaja bien, trabaja a gusto</string>
+    <string name="settings">Configuración:</string>
+    <string name="hour">Hora</string>
+    <string name="date">Fecha</string>
 </resources>

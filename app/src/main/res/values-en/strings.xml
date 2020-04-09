@@ -10,12 +10,15 @@
     <string name="save">SAVE</string>
     <string name="reset">RESTORE</string>
     <string name="working_days">Workdays</string>
-    <string name="Mon">LU</string>
-    <string name="Tue">MA</string>
-    <string name="Wed">MI</string>
-    <string name="Thu">JU</string>
-    <string name="Fri">VI</string>
+    <string name="Sun">SU</string>
     <string name="Sat">SA</string>
-    <string name="Sun">DO</string>
+    <string name="Fri">FR</string>
+    <string name="Thu">TH</string>
+    <string name="Wed">WE</string>
+    <string name="Tue">TU</string>
+    <string name="Mon">MO</string>
     <string name="app_slogan">Work well, work at ease</string>
+    <string name="settings">Settings:</string>
+    <string name="date">Date</string>
+    <string name="hour">Hour</string>
 </resources>
