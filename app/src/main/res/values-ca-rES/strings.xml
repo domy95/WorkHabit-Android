@@ -21,4 +21,5 @@
     <string name="date">dd/MM/yyyy</string>
     <string name="hour">hh:mm</string>
     <string name="settings">Configuració:</string>
+    <string name="same_schedule">Marca aquesta opció si vols mantenir el mateix horari a tots els dies actius</string>
 </resources>
