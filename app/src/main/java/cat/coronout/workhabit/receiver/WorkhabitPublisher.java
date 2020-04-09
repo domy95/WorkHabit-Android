@@ -8,23 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-public class WorkhabitPublisher extends BroadcastReceiver {
+import cat.coronout.workhabit.util.NotificationsManager;
 
-    private static final String NOTIFICATION_CHANNEL_NAME = "NOTIFICATION_CHANNEL_WORKHABIT";
-    private static final String NOTIFICATION_ID = "workhabit_notification_id";
-    private static final String NOTIFICATION = "notification";
+public class WorkhabitPublisher extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = intent.getParcelableExtra(NOTIFICATION);
+        Notification notification = intent.getParcelableExtra(NotificationsManager.NOTIFICATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_ID, NOTIFICATION_CHANNEL_NAME, importance);
+            NotificationChannel notificationChannel = new NotificationChannel(NotificationsManager.NOTIFICATION_ID, NotificationsManager.NOTIFICATION_CHANNEL_NAME, importance);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        int id = intent.getIntExtra(NOTIFICATION_ID, 0);
+        int id = intent.getIntExtra(NotificationsManager.NOTIFICATION_ID, 0);
         assert notificationManager != null;
         notificationManager.notify(id, notification);
     }
