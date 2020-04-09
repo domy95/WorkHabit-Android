@@ -22,4 +22,6 @@
     <string name="hour">hh:mm</string>
     <string name="date">dd/MM/yyyy</string>
     <string name="same_schedule">Marca esta opción si quieres mantener el mismo horario todos los días activos</string>
+    <string name="delete">ELIMINAR</string>
+    <string name="schedule_error">No es posible asignar esta configuración</string>
 </resources>

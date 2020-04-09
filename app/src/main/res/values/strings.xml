@@ -15,7 +15,9 @@
     <string name="birth_date">Data naixement</string>
     <string name="save">GUARDA</string>
     <string name="reset">RESTAURA</string>
+    <string name="delete">ELIMINA</string>
     <string name="working_days">Dies de treball</string>
+    <string name="schedule_error">No es possible assignar aquesta configuració</string>
 
     <string name="Mon">DL</string>
     <string name="Tue">DM</string>

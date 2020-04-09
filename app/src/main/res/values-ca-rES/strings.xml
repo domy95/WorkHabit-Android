@@ -22,4 +22,6 @@
     <string name="hour">hh:mm</string>
     <string name="settings">Configuració:</string>
     <string name="same_schedule">Marca aquesta opció si vols mantenir el mateix horari a tots els dies actius</string>
+    <string name="delete">ELIMINA</string>
+    <string name="schedule_error">No es possible assignar aquesta configuració</string>
 </resources>
