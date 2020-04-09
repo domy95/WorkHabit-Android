@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +26,8 @@ import java.util.Date;
 import cat.coronout.workhabit.model.Schedule;
 import cat.coronout.workhabit.model.Setting;
 import cat.coronout.workhabit.util.LocalStorage;
+import cat.coronout.workhabit.util.NotificationsManager;
+import cat.coronout.workhabit.util.ScheduleValidator;
 import cat.coronout.workhabit.util.Utils;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkboxSameSchedule;
 
     // Layouts
-    private LinearLayout layoutMon, layoutTue, layoutWed, layoutThu, layoutFri, layoutSat, layoutSun;
+    private LinearLayout parentLayout, layoutMon, layoutTue, layoutWed, layoutThu, layoutFri, layoutSat, layoutSun;
 
     // Buttons
     private Button btnMon, btnTue, btnWed, btnThu, btnFri, btnSat, btnSun;
@@ -100,11 +104,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.reset:
                 resetData();
                 break;
+            case R.id.delete:
+                deleteData();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void setupViews() {
+        parentLayout = findViewById(R.id.parentLayout);
         checkboxSameSchedule = findViewById(R.id.checkboxSameSchedule);
         setupScheduleButtons();
         setupScheduleLayouts();
@@ -194,7 +202,10 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 String finalHour = Utils.getUserHour(hourOfDay, minute);
-                                applyHourChange(finalHour, schedule, hourMode);
+                                if (ScheduleValidator.isValidSchedule(schedule, hourMode, finalHour))
+                                    applyHourChange(finalHour, schedule, hourMode);
+                                else
+                                    Utils.showBasicSnackBar(parentLayout, getString(R.string.schedule_error));
                             }
                         },
                         hour,
@@ -225,6 +236,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // Canvi d'estat
                     schedule.setEnabled(!schedule.isEnabled());
+                    if (!schedule.isEnabled()) {
+                        schedule.setStartHourMorning("");
+                        schedule.setEndHourMorning("");
+                        schedule.setStartHourAfternoon("");
+                        schedule.setEndHourAfternoon("");
+                    }
                     setting.setSchedule(schedule);
                     setupWeekDay(schedule.getWeekDay());
                 }
@@ -239,9 +256,8 @@ public class MainActivity extends AppCompatActivity {
             final Schedule schedule;
 
             if (setting.getSchedule(weekDay) == null)
-                schedule = new Schedule(weekDay, "", "", "", "");
-            else
-                schedule = setting.getSchedule(weekDay);
+                setting.setSchedule(new Schedule(weekDay, "", "", "", ""));
+            schedule = setting.getSchedule(weekDay);
 
             setupHourListener(schedule, textViews[0], Schedule.HOUR_MODE.START_MORNING);
             setupHourListener(schedule, textViews[1], Schedule.HOUR_MODE.END_MORNING);
@@ -361,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveData() {
+        NotificationsManager manager = NotificationsManager.getInstance(MainActivity.this);
+        Notification notification = manager.getNotification("Hola", "Què tal?");
+        manager.scheduleNotification(notification, 3000);
         if (localStorage.hasChanged(setting)) {
             localStorage.saveSetting(setting);
             resetData();
@@ -368,6 +387,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetData() {
+        setting = localStorage.getCurrentSetting();
+        setupCheckbox();
+        setupSchedules();
+        setupBirthDate();
+    }
+
+    private void deleteData() {
+        localStorage.deleteCurrentSetting();
         setting = localStorage.getCurrentSetting();
         setupCheckbox();
         setupSchedules();
