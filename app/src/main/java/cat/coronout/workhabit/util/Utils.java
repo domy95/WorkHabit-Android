@@ -1,5 +1,8 @@
 package cat.coronout.workhabit.util;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +26,7 @@ public abstract class Utils {
      */
     public static Calendar getCalendarFromDate(Date date) {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTime(date);
         return calendar;
     }
@@ -71,11 +75,13 @@ public abstract class Utils {
      */
     public static int getHour(String hour) {
         String[] hourSplitted = hour.split(":");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         int result;
         try {
-            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[0]) : (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY));
+            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[0]) : calendar.get(Calendar.HOUR_OF_DAY));
         } catch (Exception ex) {
-            result = (Calendar.getInstance()).get(Calendar.HOUR_OF_DAY);
+            result = calendar.get(Calendar.HOUR_OF_DAY);
             ex.printStackTrace();
         }
         return result;
@@ -88,14 +94,26 @@ public abstract class Utils {
      */
     public static int getMinute(String hour) {
         String[] hourSplitted = hour.split(":");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         int result;
         try {
-            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[1]) : (Calendar.getInstance()).get(Calendar.MINUTE));
+            result = ((hourSplitted.length > 1) ? Integer.parseInt(hourSplitted[1]) : calendar.get(Calendar.MINUTE));
         } catch (Exception ex) {
-            result = (Calendar.getInstance()).get(Calendar.MINUTE);
+            result = calendar.get(Calendar.MINUTE);
             ex.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * Get current day of the week
+     * @return Day of the week
+     */
+    public static int getCurrentWeekDay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     /**
@@ -106,6 +124,62 @@ public abstract class Utils {
     public static void showBasicSnackBar(View container, String message) {
         Snackbar snackBar = Snackbar.make(container, message, Snackbar.LENGTH_LONG);
         snackBar.show();
+    }
+
+    /**
+     * Get date from hour
+     * @param hour Hour as string representations
+     * @return Date representing that hour today
+     */
+    public static Date getDateFromHour(String hour) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(hour));
+        calendar.set(Calendar.MINUTE, Utils.getMinute(hour));
+        return calendar.getTime();
+    }
+
+    /**
+     * Get hour difference between two dates
+     * @param lhs Date instance (lesser)
+     * @param rhs Date instance (greather)
+     * @return Difference in hours
+     */
+    public static long getHourDifferenceBetweenTwoDates(Date lhs, Date rhs) {
+        long different = rhs.getTime() - lhs.getTime();
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+        long elapsedSeconds = different / secondsInMilli;
+        return ((elapsedDays * 24) + elapsedHours);
+    }
+
+    /**
+     * Cast drawable/mipmap resource to Bitmap object
+     * @param context Context
+     * @param resourceId Resource identifier
+     * @return Bitmap instance of that resource
+     */
+    public static Bitmap getBitmap(Context context, int resourceId) {
+        return BitmapFactory.decodeResource(context.getResources(), resourceId);
+    }
+
+    /**
+     * Setup correct next date adding days while not matching day of the week that we needs
+     * @param calendar Calendar to add days
+     * @param neededWeekDay Day of the week that we need
+     */
+    public static void setupCorrectNextDate(Calendar calendar, int neededWeekDay) {
+        while (calendar.get(Calendar.DAY_OF_WEEK) != neededWeekDay) {
+            calendar.add(Calendar.DATE, 1);
+        }
     }
 
 }
