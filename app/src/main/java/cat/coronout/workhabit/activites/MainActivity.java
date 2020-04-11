@@ -1,12 +1,11 @@
-package cat.coronout.workhabit;
+package cat.coronout.workhabit.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,18 +13,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Date;
 
+import cat.coronout.workhabit.R;
+import cat.coronout.workhabit.job.WorkhabitJobBuilder;
 import cat.coronout.workhabit.model.Schedule;
 import cat.coronout.workhabit.model.Setting;
-import cat.coronout.workhabit.util.LocalStorage;
-import cat.coronout.workhabit.util.NotificationsManager;
+import cat.coronout.workhabit.storage.LocalStorage;
+import cat.coronout.workhabit.task.ScheduleNotificationTask;
+import cat.coronout.workhabit.util.GlobalJobs;
 import cat.coronout.workhabit.util.ScheduleValidator;
 import cat.coronout.workhabit.util.Utils;
 
@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
     //  Sunday
     private TextView startHourMorningSun, endHourMorningSun, startHourAfternoonSun, endHourAfternoonSun;
 
-    // BirthDate
-    private TextView birthDateSelector;
-
     /**
      * onCreate method
      *
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup data
         setupCheckbox();
         setupSchedules();
-        setupBirthDate();
+        setupTestButtons();
     }
 
     /**
@@ -149,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         setupScheduleButtons();
         setupScheduleLayouts();
         setupScheduleTextViews();
-        birthDateSelector = findViewById(R.id.birthDateSelector);
     }
 
     /**
@@ -243,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
         setupCheckboxListeners();
         setupButtonsListeners();
         setupScheduleListeners();
-        setupBirthDateListener();
     }
 
     /**
@@ -256,6 +251,31 @@ public class MainActivity extends AppCompatActivity {
                 setting.setUsingSameSchedule(isChecked);
             }
         });
+    }
+
+    /**
+     * Search in schedules array a schedule which have at least one hour setted
+     * @param skipWeekDay Day of the week to skip
+     * @return Schedule if there are on setted correctly; null otherwise
+     */
+    private Schedule getFirstScheduleWithHours(int skipWeekDay) {
+        Schedule schedule = null;
+        boolean found = false;
+        int i = 0;
+        while (i < 7 && !found) {
+            int weekDay = i + 1;
+            if (weekDay != skipWeekDay) {
+                schedule = setting.getSchedule(weekDay);
+                if (!TextUtils.isEmpty(schedule.getStartHourMorning()) ||
+                        !TextUtils.isEmpty(schedule.getEndHourMorning()) ||
+                        !TextUtils.isEmpty(schedule.getStartHourAfternoon()) ||
+                        !TextUtils.isEmpty(schedule.getEndHourAfternoon())) {
+                    found = true;
+                }
+            }
+            i++;
+        }
+        return (found ? schedule : null);
     }
 
     /**
@@ -282,6 +302,14 @@ public class MainActivity extends AppCompatActivity {
                         schedule.setEndHourMorning("");
                         schedule.setStartHourAfternoon("");
                         schedule.setEndHourAfternoon("");
+                    } else if (setting.isUsingSameSchedule()) {
+                        Schedule settedSchedule = getFirstScheduleWithHours(schedule.getWeekDay());
+                        if (settedSchedule != null) {
+                            schedule.setStartHourMorning(settedSchedule.getStartHourMorning());
+                            schedule.setEndHourMorning(settedSchedule.getEndHourMorning());
+                            schedule.setStartHourAfternoon(settedSchedule.getStartHourAfternoon());
+                            schedule.setEndHourAfternoon(settedSchedule.getEndHourAfternoon());
+                        }
                     }
                     setting.setSchedule(schedule);
                     setupWeekDay(schedule.getWeekDay());
@@ -420,47 +448,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Setup actions for birth date elements
-     */
-    private void setupBirthDateListener() {
-
-        birthDateSelector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date date = setting.getBirthDate();
-                Calendar startDate;
-                if (date != null)
-                    startDate = Utils.getCalendarFromDate(date);
-                else
-                    startDate = Calendar.getInstance();
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        MainActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                Calendar selectedDate = Calendar.getInstance();
-                                selectedDate.set(Calendar.YEAR, year);
-                                selectedDate.set(Calendar.MONTH, month);
-                                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                setting.setBirthDate(Utils.getDateFromCalendar(selectedDate));
-                                setupBirthDate();
-                            }
-                        },
-                        startDate.get(Calendar.YEAR),
-                        startDate.get(Calendar.MONTH),
-                        startDate.get(Calendar.DAY_OF_MONTH)
-                );
-
-                dialog.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
-                dialog.setCancelable(false);
-                dialog.show();
-            }
-        });
-
-    }
-
-    /**
      * Setup data in all checkboxs
      */
     private void setupCheckbox() {
@@ -510,14 +497,6 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < textViews.length; i++)
                 textViews[i].setEnabled(false);
         }
-    }
-
-    /**
-     * Setup data in birth date views
-     */
-    private void setupBirthDate() {
-        Date birthDate = setting.getBirthDate();
-        birthDateSelector.setText(Utils.getUserDateFormat(birthDate));
     }
 
     /**
@@ -626,13 +605,12 @@ public class MainActivity extends AppCompatActivity {
      * Save current memory setting in `LocalStorage`
      */
     private void saveData() {
-        NotificationsManager manager = NotificationsManager.getInstance(MainActivity.this);
-        Notification notification = manager.getNotification("Hola", "Què tal?");
-        manager.scheduleNotification(notification, 3000);
         if (localStorage.hasChanged(setting)) {
             localStorage.saveSetting(setting);
             resetData();
+            resetAllJobs();
         }
+        Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_saved));
     }
 
     /**
@@ -642,7 +620,7 @@ public class MainActivity extends AppCompatActivity {
         setting = localStorage.getCurrentSetting();
         setupCheckbox();
         setupSchedules();
-        setupBirthDate();
+        Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_retored));
     }
 
     /**
@@ -651,9 +629,68 @@ public class MainActivity extends AppCompatActivity {
     private void deleteData() {
         localStorage.deleteCurrentSetting();
         setting = localStorage.getCurrentSetting();
-        setupCheckbox();
-        setupSchedules();
-        setupBirthDate();
+        resetData();
+        resetAllJobs();
+        Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_deleted));
+    }
+
+    /**
+     * Reset all scheduled jobs
+     *
+     * Reset all alarms
+     */
+    private void resetAllJobs() {
+        WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(getApplicationContext());
+        jobBuilder.cancelJob();
+        jobBuilder.buildNextJob();
+    }
+
+    /**
+     * Method that setup buttons to test all different kind of workhabit notifications
+     */
+    private void setupTestButtons() {
+        ((Button) findViewById(R.id.testStartWorking)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.START_WORK_JOB_ID, true);
+                task.execute();
+            }
+        });
+        ((Button) findViewById(R.id.testFinishWorking)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.END_WORK_JOB_ID, true);
+                task.execute();
+            }
+        });
+        ((Button) findViewById(R.id.testTakeBreak)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_SHORT_BREAK_JOB_ID, true);
+                task.execute();
+            }
+        });
+        ((Button) findViewById(R.id.testTakeLongBreak)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_LONG_BREAK_JOB_ID, true);
+                task.execute();
+            }
+        });
+        ((Button) findViewById(R.id.testExercise)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.DO_EXERCISE_JOB_ID, true);
+                task.execute();
+            }
+        });
+        ((Button) findViewById(R.id.testSocialize)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.SOCIALIZE_JOB_ID, true);
+                task.execute();
+            }
+        });
     }
 
 }
