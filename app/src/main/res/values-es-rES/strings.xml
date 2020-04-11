@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Workhabit</string>
-    <string name="socialize">Socializate</string>
-    <string name="practise_exercise">Practica ejercicio</string>
-    <string name="take_break">Haz una parada</string>
-    <string name="finish_working">Termina el trabajo</string>
-    <string name="start_working">Comienza el trabajo</string>
+    <string name="socialize">¿Qué tal si hacemos una llamada?</string>
+    <string name="practise_exercise">Es hora de hacer ejercicio, muévete!</string>
+    <string name="take_break">¿Qué te parece si paramos 5 minutos?</string>
+    <string name="finish_working">Ya es hora de terminar el trabajo</string>
+    <string name="start_working">En cinco minutos comienza el trabajo, ya estás preparado?</string>
     <string name="birth_date">Fecha nacimiento</string>
     <string name="working_days">Días de trabajo</string>
     <string name="reset">RESTAURAR</string>
@@ -24,4 +24,14 @@
     <string name="same_schedule">Marca esta opción si quieres mantener el mismo horario todos los días activos</string>
     <string name="delete">ELIMINAR</string>
     <string name="schedule_error">No es posible asignar esta configuración</string>
+    <string name="setting_saved">Configuración guardada</string>
+    <string name="setting_retored">Configuración restaurada</string>
+    <string name="setting_deleted">Configuración eliminada</string>
+    <string name="start_working_message">Es importante que empezamos el trabajo con plena energía. Debemos haber desayunado, debemos tener una buena higiene personal y es necesario que nos vistamos para que nuestro jefe entienda que estamos trabajando. Se debe disponer de un buen ambiente para poderse concentrar. Procura tener buena iluminación y una buena postura para evitar posibles dolores de espalda.</string>
+    <string name="finish_working_message">Es una buena práctica apuntarte donde has acabado porque mañana te sea más fácil continuar. Por mucho trabajo que tengas, no lo acabarás hoy. No te pases haciendo más horas de la cuenta porque tu cuerpo se resentirà</string>
+    <string name="take_break_short_message">Tus ojos llevan un buen rato mirando la pantalla. Es recomendable que estires las piernas y mires por la ventana para conseguir que los ojos enfoquen a diferentes distancias y se relajen.</string>
+    <string name="take_break_long_message">Levántate, toma un vaso de agua, haz un poco de estiramientos. Haciendo 10 minutos de Tai Chi moverás todos los músculos de tu cuerpo, lo agradecerás tanto físicamente como mentalmente y será mas fácil concentrarte.</string>
+    <string name="practise_exercise_message">Cada día tenemos que hacer un poco de ejercicio y, cuando se está haciendo teletrabajo, es muy habitual dejarse en este aspecto. No hacen falta grandes aparatos para ejercitar y estirar los músculos. Ten inventiva y verás como te pueden ayudar un par de garrafas de agua ;)</string>
+    <string name="socialize_message">Tu familia y amigos quieren saber cómo estás. Hazles una llamada! Así desconectas del trabajo y disfrutarás más de tu tiempo de ocio</string>
+    <string name="take_break_long">¿Qué tal si paramos 10 minutos?</string>
 </resources>

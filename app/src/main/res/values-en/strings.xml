@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Workhabit</string>
-    <string name="start_working">Start the job</string>
-    <string name="finish_working">Finish the job</string>
-    <string name="take_break">Take a break</string>
-    <string name="practise_exercise">Practice exercise</string>
-    <string name="socialize">Socialize</string>
+    <string name="start_working">In five minutes the job starts, are you ready?</string>
+    <string name="finish_working">It\'s time to finish the job</string>
+    <string name="take_break">What do you think if we stop for 5 minutes?</string>
+    <string name="practise_exercise">It\'s time to exercise, move!</string>
+    <string name="socialize">What do you think if we make a call?</string>
     <string name="birth_date">Birth date</string>
     <string name="save">SAVE</string>
     <string name="reset">RESTORE</string>
@@ -24,4 +24,14 @@
     <string name="same_schedule">Check this option if you want to keep the same schedule on all active days</string>
     <string name="delete">DELETE</string>
     <string name="schedule_error">This setting cannot be assigned</string>
+    <string name="setting_saved">Settings saved</string>
+    <string name="setting_retored">Settings restored</string>
+    <string name="setting_deleted">Settings deleted</string>
+    <string name="start_working_message">It is important that we start work with full energy. We must have had breakfast, we must have good personal hygiene and we need to get dressed so that our boss understands that we are working. You must have a good environment to be able to concentrate. Try to have good lighting and a good posture to avoid possible back pain.</string>
+    <string name="finish_working_message">It\'s a good practice to tell yourself where you ended up so that tomorrow it\'s easier for you to continue. No matter how much work you have, you won\'t finish it today. Do not spend extra hours counting because your body will suffer</string>
+    <string name="take_break_short_message">Els teus ulls han estat enfocats a la pantalla durant un temps. És recomanable estirar les cames i mirar per la finestra perquè els ulls estiguin enfocats a diferents distàncies i relaxar-se.</string>
+    <string name="take_break_long_message">Get up, have a glass of water, do some stretching. In 10 minutes of Tai Chi you will move all the muscles of your body, you will appreciate it both physically and mentally and it will be easier to concentrate.</string>
+    <string name="practise_exercise_message">It\'s time to exercise, move!</string>
+    <string name="socialize_message">Your family and friends want to know how you are doing. Give them a call! So you disconnect from work and you will enjoy more of your leisure time</string>
+    <string name="take_break_long">What do you think if we stop for 10 minutes?</string>
 </resources>

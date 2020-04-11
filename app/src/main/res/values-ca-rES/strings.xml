@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Workhabit</string>
-    <string name="start_working">Comença la feina</string>
-    <string name="finish_working">Acaba la feina</string>
-    <string name="take_break">Fes una parada</string>
-    <string name="practise_exercise">Practica exercici</string>
-    <string name="socialize">Socialitza\'t</string>
+    <string name="start_working">D\'aquí cinc minuts comença la feina, ja estàs preparat?</string>
+    <string name="finish_working">Ja és hora d\'acabar la feina</string>
+    <string name="take_break">Què et sembla si parem 5 minuts?</string>
+    <string name="practise_exercise">És hora de fer exercici, mou-te!</string>
+    <string name="socialize">Què et sembla si fem una trucada?</string>
     <string name="birth_date">Data naixement</string>
     <string name="save">GUARDA</string>
     <string name="reset">RESTAURA</string>
@@ -24,4 +24,14 @@
     <string name="same_schedule">Marca aquesta opció si vols mantenir el mateix horari a tots els dies actius</string>
     <string name="delete">ELIMINA</string>
     <string name="schedule_error">No es possible assignar aquesta configuració</string>
+    <string name="setting_deleted">Configuració eliminada</string>
+    <string name="setting_retored">Configuració restaurada</string>
+    <string name="setting_saved">Configuració desada</string>
+    <string name="start_working_message">És important que comencem la feina amb plena energia. Hem d\'haver esmorzat, hem de tenir una bona higiene personal i cal que ens vestim perquè el nostre cap entengui que estem treballant. S\'ha de disposar d\'un bon ambient per poder-se concentrar. Procura tenir bona il·luminació i una bona postura per evitar possibles mals d\'esquena.</string>
+    <string name="finish_working_message">És una bona pràctica apuntar-te on has acabat perquè demà et sigui més fàcil continuar. Per molta feina que tinguis, no l\'acabaràs avui. No et passis fent més hores del compte perquè el teu cos se\'n resentirà</string>
+    <string name="take_break_short_message">Els teus ulls porten una bona estona mirant la pantalla. És recomanable que estiris les cames i miris per la finestra per aconseguir que els ulls enfoquin a diferents distàncies i es relaxin.</string>
+    <string name="take_break_long_message">Aixeca\'t, pren un got d\'aigua, fes una mica d\'estiraments. Fent 10 minuts de Tai Chi mouràs tots els músculs del teu cos, ho agrairàs tant fisicament com mentalment i serà mes fàcil concentrar-te.</string>
+    <string name="practise_exercise_message">És hora de fer exercici, mou-te!</string>
+    <string name="socialize_message">La teva família i amics volen saber com estàs. Fes-los una trucada! Aixi desconnectes de la feina i disfrutaràs mes del teu temps d\'oci</string>
+    <string name="take_break_long">Què et sembla si parem 10 minuts?</string>
 </resources>
