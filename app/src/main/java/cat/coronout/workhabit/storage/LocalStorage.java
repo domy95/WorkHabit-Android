@@ -1,4 +1,4 @@
-package cat.coronout.workhabit.util;
+package cat.coronout.workhabit.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,11 @@ import java.util.Date;
 import cat.coronout.workhabit.model.Schedule;
 import cat.coronout.workhabit.model.Setting;
 
+/**
+ * LocalStorage class
+ *
+ * Use it to manage all events and actions between app and local storage
+ */
 public class LocalStorage {
 
     /// Storage name attribute
