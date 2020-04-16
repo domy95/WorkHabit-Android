@@ -159,9 +159,10 @@ public class WorkhabitJobBuilder {
      * Build next job for specified schedule
      * @param schedule Schedule where to schedule the next job
      * @param todayWeekDay Today day of week
+     * @return Next job identifier
      */
-    private void buildNextJobForSchedule(Schedule schedule, int todayWeekDay) {
-        if (schedule == null) return;
+    private int buildNextJobForSchedule(Schedule schedule, int todayWeekDay) {
+        if (schedule == null) return -1;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         // If isn't alarm for today, next alarm sure it's for start working
@@ -171,6 +172,7 @@ public class WorkhabitJobBuilder {
             calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(startWorkingHour));
             calendar.set(Calendar.MINUTE, Utils.getMinute(startWorkingHour));
             buildJob(GlobalJobs.START_WORK_JOB_ID, calendar);
+            return GlobalJobs.START_WORK_JOB_ID;
         }
         // Otherwise we need to check what time is now to schedule the correct job
         else {
@@ -183,6 +185,7 @@ public class WorkhabitJobBuilder {
                 calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(strStartHourMorning));
                 calendar.set(Calendar.MINUTE, Utils.getMinute(strStartHourMorning));
                 buildJob(GlobalJobs.START_WORK_JOB_ID, calendar);
+                return GlobalJobs.START_WORK_JOB_ID;
             }
             else if (!TextUtils.isEmpty(schedule.getEndHourMorning()) && (strNow.compareTo(endHourMorning) < 0)) {
                 // There're three possibilities: Difference greather than (or equal) 2 hours => SHORT_BREAK || LONG_BREAK (depending on start work difference); otherwise END_WORK
@@ -194,19 +197,23 @@ public class WorkhabitJobBuilder {
                     calendar.add(Calendar.HOUR_OF_DAY, 1);
                     if (startWorkDifferenceNow % 2 == 0) {
                         buildJob(GlobalJobs.TAKE_SHORT_BREAK_JOB_ID, calendar);
+                        return GlobalJobs.TAKE_SHORT_BREAK_JOB_ID;
                     } else {
                         buildJob(GlobalJobs.TAKE_LONG_BREAK_JOB_ID, calendar);
+                        return GlobalJobs.TAKE_LONG_BREAK_JOB_ID;
                     }
                 } else {
                     calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(schedule.getEndHourMorning()));
                     calendar.set(Calendar.MINUTE, Utils.getMinute(schedule.getEndHourMorning()));
                     buildJob(GlobalJobs.END_WORK_JOB_ID, calendar);
+                    return GlobalJobs.END_WORK_JOB_ID;
                 }
             }
             else if (!TextUtils.isEmpty(strStartHourAfternoon) && (strNow.compareTo(strStartHourAfternoon) < 0)) {
                 calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(strStartHourAfternoon));
                 calendar.set(Calendar.MINUTE, Utils.getMinute(strStartHourAfternoon));
                 buildJob(GlobalJobs.START_WORK_JOB_ID, calendar);
+                return GlobalJobs.START_WORK_JOB_ID;
             }
             else if (!TextUtils.isEmpty(schedule.getEndHourAfternoon()) && (strNow.compareTo(endHourAfternoon) < 0)) {
                 // There're three possibilities: Difference greather than (or equal) 2 hours => SHORT_BREAK || LONG_BREAK (depending on start work difference); otherwise END_WORK
@@ -218,17 +225,20 @@ public class WorkhabitJobBuilder {
                     calendar.add(Calendar.HOUR_OF_DAY, 1);
                     if (startWorkDifferenceNow % 2 == 0) {
                         buildJob(GlobalJobs.TAKE_SHORT_BREAK_JOB_ID, calendar);
+                        return GlobalJobs.TAKE_SHORT_BREAK_JOB_ID;
                     } else {
                         buildJob(GlobalJobs.TAKE_LONG_BREAK_JOB_ID, calendar);
+                        return GlobalJobs.TAKE_LONG_BREAK_JOB_ID;
                     }
                 } else {
                     calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(schedule.getEndHourAfternoon()));
                     calendar.set(Calendar.MINUTE, Utils.getMinute(schedule.getEndHourAfternoon()));
                     buildJob(GlobalJobs.END_WORK_JOB_ID, calendar);
+                    return GlobalJobs.END_WORK_JOB_ID;
                 }
             } else {
                 // There's an error; Before call this method it check if now is before last endWork hour
-                return;
+                return -1;
             }
         }
     }
@@ -287,8 +297,9 @@ public class WorkhabitJobBuilder {
      *
      * For example after END_WORKING job (`jobId`) we need to schedule DO_EXERCISE job
      * @param jobId Job identifier
+     * @return Next job identifier
      */
-    public void setupNextJob(int jobId) {
+    public int setupNextJob(int jobId) {
         LocalStorage storage = LocalStorage.getInstance(context);
         Setting setting = storage.getCurrentSetting();
         int weekDay = Utils.getCurrentWeekDay();
@@ -307,15 +318,17 @@ public class WorkhabitJobBuilder {
                 calendar.set(Calendar.MINUTE, Utils.getMinute(lastEndHour));
                 calendar.add(Calendar.MINUTE, 5);
                 buildJob(GlobalJobs.DO_EXERCISE_JOB_ID, calendar);
+                return GlobalJobs.DO_EXERCISE_JOB_ID;
             } else if (jobId == GlobalJobs.DO_EXERCISE_JOB_ID) {
                 // Next job is socialize
                 calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(lastEndHour));
                 calendar.set(Calendar.MINUTE, Utils.getMinute(lastEndHour));
                 calendar.add(Calendar.HOUR_OF_DAY, 1);
                 buildJob(GlobalJobs.SOCIALIZE_JOB_ID, calendar);
+                return GlobalJobs.SOCIALIZE_JOB_ID;
             } else {
                 // Next job is startWork from next active schedule
-                buildNextJobForSchedule(getNextWorkableSchedule(setting, weekDay), weekDay);
+                return buildNextJobForSchedule(getNextWorkableSchedule(setting, weekDay), weekDay);
             }
         } else {
             String strStartHourAfternoon = (TextUtils.isEmpty(schedule.getStartHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getStartHourAfternoon()), Utils.getMinute(schedule.getStartHourAfternoon())));
@@ -344,11 +357,13 @@ public class WorkhabitJobBuilder {
                         calendar.set(Calendar.MINUTE, Utils.getMinute(strNow));
                         calendar.add(Calendar.HOUR_OF_DAY, 1);
                         buildJob(nextJobId, calendar);
+                        return nextJobId;
                     } else if (!TextUtils.isEmpty(endHour)) {
                         // Next job is endWork
                         calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(endHour));
                         calendar.set(Calendar.MINUTE, Utils.getMinute(endHour));
                         buildJob(GlobalJobs.END_WORK_JOB_ID, calendar);
+                        return GlobalJobs.END_WORK_JOB_ID;
                     }
                     break;
                 case GlobalJobs.END_WORK_JOB_ID:
@@ -358,18 +373,20 @@ public class WorkhabitJobBuilder {
                         calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(strStartHourAfternoon));
                         calendar.set(Calendar.MINUTE, Utils.getMinute(strStartHourAfternoon));
                         buildJob(GlobalJobs.START_WORK_JOB_ID, calendar);
+                        return GlobalJobs.START_WORK_JOB_ID;
                     } else {
                         // Next job is do exercise
                         calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(lastEndHour));
                         calendar.set(Calendar.MINUTE, Utils.getMinute(lastEndHour));
                         calendar.add(Calendar.MINUTE, 5);
                         buildJob(GlobalJobs.DO_EXERCISE_JOB_ID, calendar);
+                        return GlobalJobs.DO_EXERCISE_JOB_ID;
                     }
-                    break;
                 default:
                     break; //There's an error
             }
         }
+        return -1;
     }
 
 }

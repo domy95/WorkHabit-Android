@@ -18,6 +18,8 @@ public class ScheduleNotificationTask extends AsyncTask<Void, Void, Boolean> {
     private Context context;
     /// Job identifier
     private int jobId;
+    /// Next job identifier
+    private int nextJobId;
     /// Flag isTest to delete delays while showing notifications
     private boolean isTest;
 
@@ -31,8 +33,8 @@ public class ScheduleNotificationTask extends AsyncTask<Void, Void, Boolean> {
      * @param context Context
      * @param jobId Job identifier
      */
-    public ScheduleNotificationTask(Context context, int jobId) {
-        this(context, jobId, false);
+    public ScheduleNotificationTask(Context context, int jobId, int nextJobId) {
+        this(context, jobId, nextJobId, false);
     }
 
     /**
@@ -41,9 +43,10 @@ public class ScheduleNotificationTask extends AsyncTask<Void, Void, Boolean> {
      * @param jobId Job identifier
      * @param isTest Flag test mode
      */
-    public ScheduleNotificationTask(Context context, int jobId, boolean isTest) {
+    public ScheduleNotificationTask(Context context, int jobId, int nextJobId, boolean isTest) {
         this.context = context;
         this.jobId = jobId;
+        this.nextJobId = nextJobId;
         this.isTest = isTest;
     }
 
@@ -79,6 +82,8 @@ public class ScheduleNotificationTask extends AsyncTask<Void, Void, Boolean> {
                 break;
             case GlobalJobs.END_WORK_JOB_ID:
                 notificationBody = notificationMessages.getNotificationMessage(R.string.finish_working, R.string.finish_working_message);
+                if (nextJobId == GlobalJobs.START_WORK_JOB_ID)
+                    notificationBody = notificationMessages.getNotificationMessage(R.string.finish_working, R.string.first_finish_working_message);
                 break;
             case GlobalJobs.DO_EXERCISE_JOB_ID:
                 notificationBody = notificationMessages.getNotificationMessage(R.string.practise_exercise, R.string.practise_exercise_message);

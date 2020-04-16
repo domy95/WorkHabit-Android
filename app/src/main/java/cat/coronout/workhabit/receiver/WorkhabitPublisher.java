@@ -54,10 +54,12 @@ public class WorkhabitPublisher extends BroadcastReceiver {
             jobBuilder.buildNextJob();
         } else if (intent.getIntExtra(GlobalJobs.DO_JOB_EXECUTION_KEY, 1) == GlobalJobs.DO_JOB_EXECUTION_ID) {
             int jobId = intent.getIntExtra(GlobalJobs.JOB_ID_KEY, -1);
-            ScheduleNotificationTask scheduleNotificationTask = new ScheduleNotificationTask(context.getApplicationContext(), jobId);
-            scheduleNotificationTask.execute();
             WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
-            jobBuilder.setupNextJob(jobId);
+            int nextJobId = jobBuilder.setupNextJob(jobId);
+            ScheduleNotificationTask scheduleNotificationTask = new ScheduleNotificationTask(context.getApplicationContext(), jobId, nextJobId);
+            scheduleNotificationTask.execute();
+        } else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "WorkhabitPublisher onReceive: BOOT_COMPLETED");
         }
     }
 

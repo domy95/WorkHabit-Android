@@ -652,42 +652,42 @@ public class MainActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.testStartWorking)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.START_WORK_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.START_WORK_JOB_ID, -1, true);
                 task.execute();
             }
         });
         ((Button) findViewById(R.id.testFinishWorking)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.END_WORK_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.END_WORK_JOB_ID, -1,true);
                 task.execute();
             }
         });
         ((Button) findViewById(R.id.testTakeBreak)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_SHORT_BREAK_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_SHORT_BREAK_JOB_ID, -1,true);
                 task.execute();
             }
         });
         ((Button) findViewById(R.id.testTakeLongBreak)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_LONG_BREAK_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.TAKE_LONG_BREAK_JOB_ID, -1,true);
                 task.execute();
             }
         });
         ((Button) findViewById(R.id.testExercise)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.DO_EXERCISE_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.DO_EXERCISE_JOB_ID, -1,true);
                 task.execute();
             }
         });
         ((Button) findViewById(R.id.testSocialize)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.SOCIALIZE_JOB_ID, true);
+                ScheduleNotificationTask task = new ScheduleNotificationTask(getApplicationContext(), GlobalJobs.SOCIALIZE_JOB_ID, -1,true);
                 task.execute();
             }
         });
