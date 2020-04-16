@@ -34,7 +34,6 @@ public class WorkhabitPublisher extends BroadcastReceiver {
         Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "WorkhabitPublisher onReceive: " + intent.getAction());
         if (intent.getIntExtra(GlobalJobs.SHOW_NOTIFICATION_ID_KEY, -1) == GlobalJobs.SHOW_NOTIFICATION_ID) {
             // Show notification
-            Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "WorkhabitPublisher onReceive: showNotification job");
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = intent.getParcelableExtra(NotificationsManager.NOTIFICATION);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -48,7 +47,6 @@ public class WorkhabitPublisher extends BroadcastReceiver {
             notificationManager.notify(id, notification);
         } else if (intent.getIntExtra(GlobalJobs.CHECK_NOTIFICATION_PLANNING_KEY, -1) == GlobalJobs.CHECK_NOTIFICATION_PLANNING_ID) {
             // Setup jobs
-            Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "WorkhabitPublisher onReceive: setupJobs job");
             WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
 //            jobBuilder.createDailyAlarm();
             jobBuilder.buildNextJob();
@@ -59,7 +57,9 @@ public class WorkhabitPublisher extends BroadcastReceiver {
             ScheduleNotificationTask scheduleNotificationTask = new ScheduleNotificationTask(context.getApplicationContext(), jobId, nextJobId);
             scheduleNotificationTask.execute();
         } else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "WorkhabitPublisher onReceive: BOOT_COMPLETED");
+            WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
+//            jobBuilder.createDailyAlarm();
+            jobBuilder.buildNextJob();
         }
     }
 

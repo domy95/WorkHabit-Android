@@ -26,14 +26,7 @@ public class RebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "RebootReceiver onReceive: " + intent.getAction());
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            // Setup jobs
-            Log.i(GlobalJobs.GLOBAL_JOBS_TAG, "RebootReceiver onReceive: setupJobs job");
-            WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
-//            jobBuilder.createDailyAlarm();
-            jobBuilder.buildNextJob();
-        }
-
+        //Disabled to catch in WorkhabitPublisher
     }
 
 }
