@@ -843,56 +843,64 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grayText"/>
-
-            <TextView
-                android:layout_marginTop="10dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/test"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/testStartWorking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/start_working" />
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grayText"/>
 
-            <Button
-                android:id="@+id/testFinishWorking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/finish_working" />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/test"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <Button
-                android:id="@+id/testTakeBreak"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/take_break" />
+                <Button
+                    android:id="@+id/testStartWorking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_working" />
 
-            <Button
-                android:id="@+id/testTakeLongBreak"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/take_break_long" />
+                <Button
+                    android:id="@+id/testFinishWorking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finish_working" />
 
-            <Button
-                android:id="@+id/testExercise"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/practise_exercise" />
+                <Button
+                    android:id="@+id/testTakeBreak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/take_break" />
 
-            <Button
-                android:id="@+id/testSocialize"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/socialize" />
+                <Button
+                    android:id="@+id/testTakeLongBreak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/take_break_long" />
+
+                <Button
+                    android:id="@+id/testExercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/practise_exercise" />
+
+                <Button
+                    android:id="@+id/testSocialize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/socialize" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
