@@ -171,14 +171,15 @@ public class WorkhabitJobBuilder {
             Utils.setupCorrectNextDate(calendar, schedule.getWeekDay());
             calendar.set(Calendar.HOUR_OF_DAY, Utils.getHour(startWorkingHour));
             calendar.set(Calendar.MINUTE, Utils.getMinute(startWorkingHour));
+            calendar.add(Calendar.MINUTE, -5);
             buildJob(GlobalJobs.START_WORK_JOB_ID, calendar);
             return GlobalJobs.START_WORK_JOB_ID;
         }
         // Otherwise we need to check what time is now to schedule the correct job
         else {
             String strNow = Utils.getUserHour(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
-            String strStartHourMorning = (TextUtils.isEmpty(schedule.getStartHourMorning()) ? "" :  Utils.getUserHour(Utils.getHour(schedule.getStartHourMorning()), Utils.getMinute(schedule.getStartHourMorning())));
-            String strStartHourAfternoon = (TextUtils.isEmpty(schedule.getStartHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getStartHourAfternoon()), Utils.getMinute(schedule.getStartHourAfternoon())));
+            String strStartHourMorning = (TextUtils.isEmpty(schedule.getStartHourMorning()) ? "" :  Utils.getUserHour(Utils.getHour(schedule.getStartHourMorning()), Utils.getMinute(schedule.getStartHourMorning()), -5));
+            String strStartHourAfternoon = (TextUtils.isEmpty(schedule.getStartHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getStartHourAfternoon()), Utils.getMinute(schedule.getStartHourAfternoon()), -5));
             String endHourMorning = (TextUtils.isEmpty(schedule.getEndHourMorning()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getEndHourMorning()), Utils.getMinute(schedule.getEndHourMorning())));
             String endHourAfternoon = (TextUtils.isEmpty(schedule.getEndHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getEndHourAfternoon()), Utils.getMinute(schedule.getEndHourAfternoon())));
             if (!TextUtils.isEmpty(strStartHourMorning) && (strNow.compareTo(strStartHourMorning) < 0)) {
@@ -331,7 +332,7 @@ public class WorkhabitJobBuilder {
                 return buildNextJobForSchedule(getNextWorkableSchedule(setting, weekDay), weekDay);
             }
         } else {
-            String strStartHourAfternoon = (TextUtils.isEmpty(schedule.getStartHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getStartHourAfternoon()), Utils.getMinute(schedule.getStartHourAfternoon())));
+            String strStartHourAfternoon = (TextUtils.isEmpty(schedule.getStartHourAfternoon()) ? "" : Utils.getUserHour(Utils.getHour(schedule.getStartHourAfternoon()), Utils.getMinute(schedule.getStartHourAfternoon()), -5));
             switch (jobId) {
                 case GlobalJobs.START_WORK_JOB_ID:
                 case GlobalJobs.TAKE_SHORT_BREAK_JOB_ID:

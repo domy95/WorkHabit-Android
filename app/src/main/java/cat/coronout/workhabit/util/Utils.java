@@ -69,6 +69,33 @@ public abstract class Utils {
     }
 
     /**
+     * Get the hour using left zeros and adding and integer number of minutes
+     * @param hour Hour
+     * @param minute Minute
+     * @param addMinutes Integer number of minutes to add
+     * @return String representation of hour
+     */
+    public static String getUserHour(int hour, int minute, int addMinutes) {
+        //Apply minutes
+        minute += addMinutes;
+        if (minute > 59) {
+            hour++;
+            minute = (minute - 60);
+        } else if (minute < 0) {
+            hour--;
+            minute = (60 + minute);
+        }
+        //Cast to user hour representation
+        String finalHour = "";
+        if (hour < 10) finalHour += ("0" + hour);
+        else finalHour += hour;
+        finalHour += ":";
+        if (minute < 10) finalHour += ("0" + minute);
+        else finalHour += minute;
+        return finalHour;
+    }
+
+    /**
      * Get the hour unit from string representation of hour
      * @param hour String representation of hour
      * @return Hour unit
