@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import cat.coronout.workhabit.analytics.AnalyticId;
+import cat.coronout.workhabit.analytics.WorkhabitFirebaseAnalytics;
 import cat.coronout.workhabit.job.WorkhabitJobBuilder;
 import cat.coronout.workhabit.notification.NotificationsManager;
 import cat.coronout.workhabit.task.ScheduleNotificationTask;
@@ -48,18 +50,21 @@ public class WorkhabitPublisher extends BroadcastReceiver {
         } else if (intent.getIntExtra(GlobalJobs.CHECK_NOTIFICATION_PLANNING_KEY, -1) == GlobalJobs.CHECK_NOTIFICATION_PLANNING_ID) {
             // Setup jobs
             WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
-//            jobBuilder.createDailyAlarm();
+            jobBuilder.createDailyAlarm();
             jobBuilder.buildNextJob();
+            WorkhabitFirebaseAnalytics.getInstance(context).sendEvent(AnalyticId.DAILY_ALARM_ID);
         } else if (intent.getIntExtra(GlobalJobs.DO_JOB_EXECUTION_KEY, 1) == GlobalJobs.DO_JOB_EXECUTION_ID) {
             int jobId = intent.getIntExtra(GlobalJobs.JOB_ID_KEY, -1);
             WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
             int nextJobId = jobBuilder.setupNextJob(jobId);
             ScheduleNotificationTask scheduleNotificationTask = new ScheduleNotificationTask(context.getApplicationContext(), jobId, nextJobId);
             scheduleNotificationTask.execute();
+            WorkhabitFirebaseAnalytics.getInstance(context).sendEvent(AnalyticId.JOB_ID);
         } else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(context.getApplicationContext());
-//            jobBuilder.createDailyAlarm();
+            jobBuilder.createDailyAlarm();
             jobBuilder.buildNextJob();
+            WorkhabitFirebaseAnalytics.getInstance(context).sendEvent(AnalyticId.BOOT_COMPLETED_ID);
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import java.util.Calendar;
@@ -15,6 +16,11 @@ import cat.coronout.workhabit.storage.LocalStorage;
 import cat.coronout.workhabit.util.GlobalJobs;
 import cat.coronout.workhabit.util.Utils;
 
+/**
+ * Workhabit job builder
+ *
+ * Build different kind of jobs used in workhabit app
+ */
 public class WorkhabitJobBuilder {
 
     /// WorkhabitJobBuilder instance; It's a singleton
@@ -71,6 +77,7 @@ public class WorkhabitJobBuilder {
         intent.putExtra(GlobalJobs.CHECK_NOTIFICATION_PLANNING_KEY, GlobalJobs.CHECK_NOTIFICATION_PLANNING_ID);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GlobalJobs.REQUEST_CODE_DAILY_ALARM, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendar = getDailyConfigurationCalendar();
+        long millis = SystemClock.elapsedRealtime() + (System.currentTimeMillis() - calendar.getTimeInMillis());
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -102,7 +109,6 @@ public class WorkhabitJobBuilder {
     private void buildJob(int jobId, Calendar calendar) {
         this.cancelJob();
         if (calendar != null) {
-//            long millis = SystemClock.elapsedRealtime() + (System.currentTimeMillis() - calendar.getTimeInMillis());
             long millis = calendar.getTimeInMillis();
             Intent intent = new Intent(context, WorkhabitPublisher.class);
             intent.putExtra(GlobalJobs.DO_JOB_EXECUTION_KEY, GlobalJobs.DO_JOB_EXECUTION_ID);
@@ -123,7 +129,8 @@ public class WorkhabitJobBuilder {
     private Calendar getDailyConfigurationCalendar() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.add(Calendar.DATE, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 5);
         calendar.set(Calendar.MINUTE, 0);
         return calendar;
     }
