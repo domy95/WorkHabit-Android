@@ -20,6 +20,8 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import cat.coronout.workhabit.R;
+import cat.coronout.workhabit.analytics.AnalyticId;
+import cat.coronout.workhabit.analytics.WorkhabitFirebaseAnalytics;
 import cat.coronout.workhabit.job.WorkhabitJobBuilder;
 import cat.coronout.workhabit.model.Schedule;
 import cat.coronout.workhabit.model.Setting;
@@ -611,6 +613,7 @@ public class MainActivity extends AppCompatActivity {
             resetAllJobs();
         }
         Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_saved));
+        WorkhabitFirebaseAnalytics.getInstance(getApplicationContext()).sendEvent(AnalyticId.SAVE_SETTINGS_ID);
     }
 
     /**
@@ -621,6 +624,7 @@ public class MainActivity extends AppCompatActivity {
         setupCheckbox();
         setupSchedules();
         Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_retored));
+        WorkhabitFirebaseAnalytics.getInstance(getApplicationContext()).sendEvent(AnalyticId.RESTORE_SETTINGS_ID);
     }
 
     /**
@@ -632,6 +636,7 @@ public class MainActivity extends AppCompatActivity {
         resetData();
         resetAllJobs();
         Utils.showBasicSnackBar(parentLayout, getString(R.string.setting_deleted));
+        WorkhabitFirebaseAnalytics.getInstance(getApplicationContext()).sendEvent(AnalyticId.DELETE_SETTINGS_ID);
     }
 
     /**
@@ -641,6 +646,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void resetAllJobs() {
         WorkhabitJobBuilder jobBuilder = WorkhabitJobBuilder.getInstance(getApplicationContext());
+        jobBuilder.createDailyAlarm();
         jobBuilder.cancelJob();
         jobBuilder.buildNextJob();
     }
